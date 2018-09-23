@@ -29,7 +29,7 @@ public class CassandraApplication implements CommandLineRunner {
         List<Book> r = repository.findAll();
         r.forEach(c -> log.info(c.toString()));
 
-        repository.save(Book.builder().author("Dani Monteiro").name("DB4Beginners").subject("Infoq Brasil")
+        repository.save(Book.builder().author("Autor A").name("DB4Beginners").subject("Infoq Brasil")
                 .title("MongoDB Atlas").id(UUID.randomUUID()).build());
 
         r = repository.findAll();
