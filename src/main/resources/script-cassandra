@@ -1,0 +1,11 @@
+create keyspace testKeySpace WITH REPLICATION = {'class' : 'SimpleStrategy','replication_factor': 1 };
+
+
+CREATE TABLE IF NOT EXISTS  testKeySpace.book (
+    id UUID,
+    name varchar,
+    title varchar,
+    author varchar,
+    subject varchar,
+    primary key((id), title)
+);

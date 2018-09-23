@@ -1,0 +1,12 @@
+#$ docker run --name some-cassandra -d cassandra:tag
+#$ docker run --name some-cassandra2 -d -e CASSANDRA_SEEDS="$(docker inspect --format='{{ .NetworkSettings.IPAddress }}' some-cassandra)" cassandra:tag
+#$ docker run --name some-cassandra2 -d --link some-cassandra:cassandra cassandra:tag
+#$ docker run -it --link some-cassandra:cassandra --rm cassandra sh -c 'exec cqlsh "$CASSANDRA_PORT_9042_TCP_ADDR"'
+
+docker run -p 9042:9042 -v /home/vinicius/development/docker/cassandra:/var/lib/cassandra --name cassandra cassandra:latest
+
+
+$ docker run -it --link cassandra:cassandra --rm cassandra sh -c 'exec cqlsh "$CASSANDRA_PORT_9042_TCP_ADDR"'
+
+# create keyspace testKeySpace WITH REPLICATION = {'class' : 'SimpleStrategy','replication_factor': 3 };
+# USE ycsb;
