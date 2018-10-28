@@ -1,0 +1,50 @@
+CREATE TABLE video (
+   videoid uuid,
+   videoname varchar,
+   username varchar,
+   description varchar,
+   location map<varchar,varchar>,
+   tags set<varchar>,
+   upload_date timestamp,
+   PRIMARY KEY (videoid)
+); 
+
+CREATE TABLE video_rating (
+   videoid uuid,
+   rating_counter counter,
+   rating_total counter,
+   PRIMARY KEY (videoid)
+);
+
+CREATE TABLE video_event (
+   videoid uuid,
+   username varchar,
+   event varchar,
+   event_timestamp timeuuid,
+   video_timestamp bigint,
+   PRIMARY KEY ((videoid,username),event_timestamp,event)
+) WITH CLUSTERING ORDER BY (event_timestamp DESC,event ASC);
+
+
+
+
+###########
+
+
+
+
+CREATE KEYSPACE expertpay WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };
+
+use expertpay;
+
+
+CREATE TABLE transaction (
+   nufinancialmovement uuid,
+   nucustomer varchar,
+   username varchar,
+   description varchar,
+   location map<varchar,varchar>,
+   tags set<varchar>,
+   upload_date timestamp,
+   PRIMARY KEY (videoid)
+); 

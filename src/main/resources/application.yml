@@ -14,4 +14,3 @@ spring:
 #  port: 9042
 #cassandra:
 #  keyspace: testKeySpace
-#      

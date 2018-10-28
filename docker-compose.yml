@@ -1,12 +1,49 @@
-#$ docker run --name some-cassandra -d cassandra:tag
-#$ docker run --name some-cassandra2 -d -e CASSANDRA_SEEDS="$(docker inspect --format='{{ .NetworkSettings.IPAddress }}' some-cassandra)" cassandra:tag
-#$ docker run --name some-cassandra2 -d --link some-cassandra:cassandra cassandra:tag
-#$ docker run -it --link some-cassandra:cassandra --rm cassandra sh -c 'exec cqlsh "$CASSANDRA_PORT_9042_TCP_ADDR"'
+# Datastax
 
-docker run -p 9042:9042 -v /home/vinicius/development/docker/cassandra:/var/lib/cassandra --name cassandra cassandra:latest
+#The -g flag starts a Node with Graph Model enabled
+#The -s flag starts a Node with Search Engine enabled
+#The -k flag starts a Node with Spark Analytics enabled
+#docker run -e DS_LICENSE=accept --memory 4g --name my-dse -d datastax/dse-server -g -s -k
 
+#docker run -e DS_LICENSE=accept --link my-dse -p 9091:9091 --memory 1g --name my-studio -d datastax/dse-studio
 
-$ docker run -it --link cassandra:cassandra --rm cassandra sh -c 'exec cqlsh "$CASSANDRA_PORT_9042_TCP_ADDR"'
+# studio
 
-# create keyspace testKeySpace WITH REPLICATION = {'class' : 'SimpleStrategy','replication_factor': 3 };
-# USE ycsb;
+version: '3'
+services:
+  cassandra:
+    image: datastax/dse-server
+    networks:
+    - localhost
+    ports:
+#      - "4040:4040"
+#      - "7080:7080"
+#      - "7199:7199"
+#      - "8182:8182"
+#      - "8983:8983"
+      - "9042:9042"
+    volumes:
+      - /home/vinicius/development/docker/cassandra/datastax/config:/config
+#      - /home/vinicius/development/docker/cassandra/datastax:/var/lib/cassandra/
+#      - /home/vinicius/development/docker/cassandra/datastax/logs:/var/lib/cassandra/commit_logs
+#      - /home/vinicius/development/docker/cassandra/datastax/cache:/var/lib/cassandra/saved_caches
+    environment:
+      - DS_LICENSE=accept
+    container_name: "dse"
+    command:
+     -s
+    # Allow DSE to lock memory with mlock
+    cap_add:
+    - IPC_LOCK
+    ulimits:
+      memlock: -1
+
+#  cassandra-studio:
+#    image: datastax/dse-studio:latest
+#    networks:
+#    - localhost
+#    ports:
+#    - 9091:9091
+networks:
+  localhost:
+    driver: bridge
