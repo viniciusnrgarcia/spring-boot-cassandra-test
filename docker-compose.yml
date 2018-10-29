@@ -38,12 +38,12 @@ services:
     ulimits:
       memlock: -1
 
-#  cassandra-studio:
-#    image: datastax/dse-studio:latest
-#    networks:
-#    - localhost
-#    ports:
-#    - 9091:9091
+  cassandra-studio:
+    image: datastax/dse-studio:latest
+    networks:
+    - localhost
+    ports:
+    - 9091:9091
 networks:
   localhost:
     driver: bridge
